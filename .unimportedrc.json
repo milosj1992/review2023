@@ -1,0 +1,22 @@
+{
+  "ignoreUnresolved": [],
+  "ignoreUnused": [
+    "@windmill/react-ui",
+    "angular",
+    "boostrap",
+    "headlessui",
+    "jsvectormap",
+    "localforage",
+    "match-sorter",
+    "nebular",
+    "react-apexcharts",
+    "react-hot-toast",
+    "react-icons",
+    "react-toastify",
+    "sort-by",
+    "windmill"
+  ],
+  "ignoreUnimported": [
+
+  ]
+}
