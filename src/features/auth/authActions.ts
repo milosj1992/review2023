@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-const backendURL = "http://192.168.1.6:8000"
+const backendURL = "http://93.86.190.139:8000"
 
 interface LoginCredentials {
     username: string;

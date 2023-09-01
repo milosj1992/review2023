@@ -1,6 +1,12 @@
 import Breadcrumb from '../../components/Breadcrumb';
-
+import { useFaqCategoryQuery } from '../../api/faqCategories';
+import React from 'react';
 const FormLayout = () => {
+
+  const nesto=useFaqCategoryQuery({lang:"ch",page:1,rowsPerPage:20})
+  React.useEffect(()=>{
+    console.log(nesto);    
+  },[])
   return (
     <>
       <Breadcrumb pageName="FormLayout" />

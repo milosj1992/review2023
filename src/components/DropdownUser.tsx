@@ -4,24 +4,39 @@ import { Link } from 'react-router-dom';
 import { useGetUserDetailsQuery } from '../api/auth'
 import { setCredentials } from '../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from "../app/store";
+// import { useGetFaqListCategoriesQuery } from '../api/faqCategories';
+import { useFaqCategoryLangQuery, useFaqCategoryPostMutation, } from '../api/faqCategories';
+
 // import UserOne from '../images/user/user-01.png';
- 
-const DropdownUser = () => { 
+
+const DropdownUser = () => {
   const { userInfo } = useAppSelector((state) => state.auth)
-  const dispatch = useAppDispatch(); 
+  const faq = useAppSelector(state => state.FaqCategories);
+
+  const testRtk=useFaqCategoryPostMutation()
+  const [faqCategoryPost]=useFaqCategoryPostMutation();
+
+  const dispatch = useAppDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-   
+
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
- 
+
   const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
     pollingInterval: 900000, // 15mins
   })
-    
-  useEffect(() => { 
-    if (data) {console.log(userInfo);dispatch(setCredentials(data))}
+  // const [faqCategoryLang, { isLoading, isError, error, isSuccess }] = useFaqCategoryLangQuery();
+  // const nesto=useGetFaqListCategoriesQuery();
+  useFaqCategoryLangQuery("all");
+
+  useEffect(() => {
+    faqCategoryPost({lang:"all"});
+    // const {data1}=useFaqListCategories; 
+    // getFaqListCategoriesAll()
+    // console.log(useFaqListCategories);
+    if (data) { console.log(userInfo); dispatch(setCredentials(data)) }
   }, [data, dispatch])
- 
+
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {

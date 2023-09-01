@@ -1,28 +1,45 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl ="http://192.168.1.6:8000"
- 
-export const authApi = createApi({ 
-  reducerPath: 'authApi',
+const baseUrl = "http://93.86.190.139:8000";
+
+export const faqCategoriesApi = createApi({
+  reducerPath: 'faqCategoriesApi',
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.userToken;
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-        return headers
-      }  
+        headers.set('Authorization', `Bearer ${token}`);
+        return headers;
+      }
     },
   }),
-  endpoints: (build) => ({
-    getUserDetails: build.query({
-      query: () => ({
-        url: '/user/profile',
+  endpoints: (builder) => ({
+    faqCategoryLang: builder.query({
+      query: (queryParams) => ({
+        url: `/faq_kategorije`,
         method: 'GET',
+        params: queryParams,
+      }),
+    }),
+    faqCategory: builder.query({
+      query: ({lang,page,rowsPerPage}) => ({
+        url: `/faq_kategorije?lang=${lang}&page=${page}&rowsPerPage=${rowsPerPage}`,
+      }),
+    }),
+    faqCategoryPost: builder.mutation({
+      query: (post) => ({
+        url: `/faq_kategorijepost`,
+        method: 'POST',
+        body: post,
       }),
     }),
   }),
-})
+});
 
-// export react hook
-export const { useGetUserDetailsQuery } = authApi
+// Export react hooks
+export const {
+  useFaqCategoryLangQuery,
+  useFaqCategoryPostMutation,
+  useFaqCategoryQuery
+} = faqCategoriesApi;

@@ -1,15 +1,22 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import authReducer from "../features/auth/authSlice"
+import postReducer from '../features/faq/faqSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "../api/auth"
+import { faqCategoriesApi } from "../api/faqCategories";
 
  const store = configureStore({
   reducer: {
     auth: authReducer,
+    FaqCategories:postReducer,
     [authApi.reducerPath]: authApi.reducer,
+    [faqCategoriesApi.reducerPath]: faqCategoriesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat(authApi.middleware),
+  getDefaultMiddleware({}).concat([
+    authApi.middleware,
+    faqCategoriesApi.middleware,
+  ]),
 })
 
 export type AppDispatch = typeof store.dispatch
