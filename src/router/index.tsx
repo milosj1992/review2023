@@ -35,7 +35,7 @@ const router = createBrowserRouter([
                 ,
             },
             {
-                path: '/tables',
+                path: '/faq-category',
                 element: <Protected>
                     <Tables />
                 </Protected>,
