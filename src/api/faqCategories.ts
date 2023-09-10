@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = "http://93.86.190.139:8000";
+const baseUrl = "http://178.220.108.149:8000";
 
 export const faqCategoriesApi = createApi({
   reducerPath: 'faqCategoriesApi',
@@ -15,17 +15,26 @@ export const faqCategoriesApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    faqCategoryLang: builder.query({
-      query: (queryParams) => ({
-        url: `/faq_kategorije`,
-        method: 'GET',
-        params: queryParams,
+    faqCategoryId: builder.query({
+      query: (id) => ({
+        url: `/faq_category_id?id=${id}`,
       }),
     }),
-    faqCategory: builder.query({
-      query: ({lang,page,rowsPerPage}) => ({
+    faqCategoryList: builder.query({
+      query: ({ lang, page, rowsPerPage }) => ({
         url: `/faq_kategorije?lang=${lang}&page=${page}&rowsPerPage=${rowsPerPage}`,
       }),
+    }),
+    faqUpdateCategory: builder.mutation({
+      query: (payload) => {
+        console.log(payload)
+        const { id, ...body } = payload
+        return {
+          url: `/faq_category_id?id=${id}`,
+          method: 'PUT',
+          body,
+        }
+      }
     }),
     faqCategoryPost: builder.mutation({
       query: (post) => ({
@@ -39,7 +48,8 @@ export const faqCategoriesApi = createApi({
 
 // Export react hooks
 export const {
-  useFaqCategoryLangQuery,
+  useFaqCategoryIdQuery,
   useFaqCategoryPostMutation,
-  useFaqCategoryQuery
+  useFaqCategoryListQuery,
+  useFaqUpdateCategoryMutation
 } = faqCategoriesApi;

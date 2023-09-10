@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-const backendURL = "http://93.86.190.139:8000"
+const backendURL = "http://178.220.108.149:8000"
 
 interface LoginCredentials {
     username: string;
@@ -22,8 +22,8 @@ export const userLogin = createAsyncThunk(
                 `${backendURL}/user/login`,
                 { username, password },
                 config
-            )
-
+            )   
+                
             // store user's token in local storage
             localStorage.setItem('userToken', data.userToken)
             // console.log(data);

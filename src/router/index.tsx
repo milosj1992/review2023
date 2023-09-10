@@ -9,6 +9,8 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const DefaultLayout = lazy(() => import('../layout/DefaultLayout'));
 const ECommerce = lazy(() => import('../pages/Dashboard/ECommerce'));
+const TableOne = lazy(() => import('../components/TableOne'));
+
 const router = createBrowserRouter([
     {
         errorElement: <div>error</div>,
@@ -16,9 +18,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: 
-                <Protected> <ECommerce /></Protected>
-                ,
+                element:
+                    <Protected>
+                        <ECommerce />
+                    </Protected>,
             },
             {
                 path: '/forms/form-elements',
@@ -38,6 +41,12 @@ const router = createBrowserRouter([
                 path: '/faq-category',
                 element: <Protected>
                     <Tables />
+                </Protected>,
+            },
+            {
+                path: '/faq-id',
+                element: <Protected>
+                    <TableOne />
                 </Protected>,
             },
             {
