@@ -9,7 +9,8 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const DefaultLayout = lazy(() => import('../layout/DefaultLayout'));
 const ECommerce = lazy(() => import('../pages/Dashboard/ECommerce'));
-const TableOne = lazy(() => import('../components/TableOne'));
+const TableEditCategory = lazy(() => import('../components/TableEditCategory'));
+const TableAddCategory = lazy(() => import('../components/TableAddCategory'));
 
 const router = createBrowserRouter([
     {
@@ -44,9 +45,15 @@ const router = createBrowserRouter([
                 </Protected>,
             },
             {
-                path: '/faq-id',
+                path: '/faq-category-edit',
                 element: <Protected>
-                    <TableOne />
+                    <TableEditCategory />
+                </Protected>,
+            },
+            {
+                path: '/faq-category-add',
+                element: <Protected>
+                    <TableAddCategory />
                 </Protected>,
             },
             {

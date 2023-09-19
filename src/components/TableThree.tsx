@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useFaqCategoryListQuery } from "../api/faqCategories";
+import { useFaqCategoryListQuery, useFaqDeleteCategoryMutation } from "../api/faqCategories";
 import { useNavigate } from "react-router-dom";
 import PaginationNav from "./PaginationNavPresentation";
+import ModalDeleteCategory from "./ModalDeleteCategory";
 
 const TableThree = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -9,6 +10,30 @@ const TableThree = () => {
   const [pagination, setPagionation] = useState(1);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [langForQuery, setLangForQuery] = useState("all");
+  const [deleteId, setDeleteId] = useState(null);
+  // const [showModal, setShowModal] = useState(false);
+  const [faqDeleteCategory] = useFaqDeleteCategoryMutation();
+  // const [faqDe] = useFaqDeleteCategoryMutation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (id) => {
+    setIsModalOpen(true);
+    setDeleteId(id)
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setDeleteId(null)
+  };
+  // const [faqCategoryList]=useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage });
+  const deleteCategory = () => {
+
+    console.log("cat for delete - " + deleteId);
+    faqDeleteCategory(deleteId).unwrap().then(() => {
+      closeModal()
+    });
+  }
 
   const navigate = useNavigate();
   const { data: faqList } = useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage })
@@ -130,15 +155,10 @@ const TableThree = () => {
           <button onClick={() => console.log(generateQuery())}>Generate Query</button>
         </div>
         <div className="flex flex-col">
-          <div className="grid grid-cols-7 rounded-sm bg-gray-2 dark:bg-meta-4 max-md:grid-cols-3">
+          <div className="grid grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-4 max-md:grid-cols-3">
             <div className="p-2.5 xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
                 Title
-              </h5>
-            </div>
-            <div className="max-md:hidden p-2.5 text-center xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Category
               </h5>
             </div>
             <div className="p-2.5 text-center xl:p-5">
@@ -153,7 +173,7 @@ const TableThree = () => {
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Author
+                List Order
               </h5>
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -169,33 +189,24 @@ const TableThree = () => {
           </div>
           {faqList?.results?.map((faqItem: any) => {
             return (
-              <div className="grid grid-cols-7 border-b border-stroke dark:border-strokedark max-md:grid-cols-3" key={faqItem.id}>
+              <div className="grid grid-cols-6 border-b border-stroke dark:border-strokedark max-md:grid-cols-3" key={faqItem.id}>
                 <div className="flex items-center gap-3 p-2.5 xl:p-5">
-
                   <p className="flex items-center  text-black dark:text-white h-12">{faqItem.ime}</p>
                 </div>
-
-                <div className=" max-md:hidden flex items-center justify-center p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">CATEGORY</p>
-                </div>
-
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
                   <p className="text-meta-3">{faqItem.jezik}</p>
                 </div>
-
                 <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                   <p className="text-black dark:text-white">DATE/TIME</p>
                 </div>
-
                 <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                  <p className="text-meta-5">AUTHOR</p>
+                  <p className="text-meta-5">{faqItem.listorder}</p>
                 </div>
                 <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                   <p className="text-meta-5">{faqItem.id}</p>
                 </div>
-                {/* {flex items-center justify-center p-2.5 xl:p-5} */}
                 <div className="flex items-center justify-center p-2.5 xl:p-5 space-x-1.5 max-md:justify-around gap-2">
-                  <button className="hover:text-primary" onClick={() => navigate("/faq-id?id=" + faqItem.id)}>
+                  <button className="hover:text-primary" onClick={() => navigate("/faq-category-edit?id=" + faqItem.id)}>
                     <svg
                       className="fill-current"
                       width="18"
@@ -217,7 +228,7 @@ const TableThree = () => {
                       </defs>
                     </svg>
                   </button>
-                  <button className="hover:text-primary">
+                  <button className="hover:text-primary" onClick={() => openModal(faqItem.id)}>
                     <svg
                       className="fill-current"
                       width="18"
@@ -244,10 +255,15 @@ const TableThree = () => {
                       />
                     </svg>
                   </button>
+
                 </div>
+
               </div>
             )
           })}
+          <ModalDeleteCategory isOpen={isModalOpen} onClose={closeModal} deleteCat={() => deleteCategory()} />
+          {/* {showModal && <ModalDeleteCategory onClose={()=>setShowModal(false)}/>} */}
+
         </div>
 
       </div>

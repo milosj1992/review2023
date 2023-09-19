@@ -10,8 +10,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
     return (
         <button
             className={`flex flex-col cursor-pointer items-center justify-center w-9 h-9 shadow-[0_4px_10px_rgba(0,0,0,0.03)] text-sm font-normal transition-colors rounded-lg
-             text-black dark:text-white 
-             ${active ? "bg-primary text-white dark:bg-white dark:text-primary " : "bg-white dark:bg-primary"}
+             ${active ? "bg-primary text-white dark:bg-white dark:text-primary" : "bg-white dark:bg-primary dark:text-white text-black"}
              `}
             onClick={onClick}
             disabled={disabled}
@@ -32,8 +31,11 @@ const PaginationNav = ({
 }: any) => {
 
     const renderPageLinks = useCallback(() => {
-        pageCount=Math.round(pageCount);
-        pageRows=Math.round(pageRows);
+        
+        pageCount=Math.ceil(pageCount);
+        pageRows=Math.ceil(pageRows);
+        console.log(pageCount);
+        console.log(pageRows);
         if (pageCount === 0) return null;
         console.log(pageRows)
         // const visiblePageButtonCount = 3;

@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-const baseUrl = "http://178.220.108.149:8000";
+import { baseUrl } from '../urlForAPis';
 
 export const faqCategoriesApi = createApi({
   reducerPath: 'faqCategoriesApi',
@@ -14,6 +13,7 @@ export const faqCategoriesApi = createApi({
       }
     },
   }),
+  tagTypes: ['CategoryList'],
   endpoints: (builder) => ({
     faqCategoryId: builder.query({
       query: (id) => ({
@@ -24,24 +24,37 @@ export const faqCategoriesApi = createApi({
       query: ({ lang, page, rowsPerPage }) => ({
         url: `/faq_kategorije?lang=${lang}&page=${page}&rowsPerPage=${rowsPerPage}`,
       }),
+      providesTags: [{ type: 'CategoryList' }],
     }),
     faqUpdateCategory: builder.mutation({
       query: (payload) => {
-        console.log(payload)
-        const { id, ...body } = payload
+        // console.log(payload)
+        const { id, title } = payload;
         return {
-          url: `/faq_category_id?id=${id}`,
-          method: 'PUT',
-          body,
-        }
-      }
+          url: `/faq_category_id`,
+          method: 'PATCH',
+          body: { id, title },
+        };
+      },
     }),
-    faqCategoryPost: builder.mutation({
-      query: (post) => ({
-        url: `/faq_kategorijepost`,
-        method: 'POST',
-        body: post,
-      }),
+    faqAddCategory: builder.mutation({
+      query: (payload) => {
+        const { title, language, listOrder } = payload;
+        return {
+          url: `/faq_category_add`,
+          method: 'POST',
+          body: { title, language, listOrder },
+        };
+      },
+    }),
+    faqDeleteCategory: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/faq_category_id/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['CategoryList'],
     }),
   }),
 });
@@ -49,7 +62,8 @@ export const faqCategoriesApi = createApi({
 // Export react hooks
 export const {
   useFaqCategoryIdQuery,
-  useFaqCategoryPostMutation,
+  useFaqAddCategoryMutation,
   useFaqCategoryListQuery,
-  useFaqUpdateCategoryMutation
+  useFaqUpdateCategoryMutation,
+  useFaqDeleteCategoryMutation,
 } = faqCategoriesApi;

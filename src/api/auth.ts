@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseUrl } from '../urlForAPis';
 
-const baseUrl ="http://93.86.190.139:8000"
- 
-export const authApi = createApi({ 
+
+
+export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl,
@@ -11,7 +12,7 @@ export const authApi = createApi({
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
         return headers
-      }  
+      }
     },
   }),
   endpoints: (build) => ({

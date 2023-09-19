@@ -1,22 +1,11 @@
-import { useSearchParams } from "react-router-dom"
-import { useForm, SubmitHandler } from "react-hook-form"
-import { useFaqCategoryIdQuery, useFaqUpdateCategoryMutation } from "../api/faqCategories";
 import { useEffect, useState } from "react";
-const TableOne = () => {
-    const [serchParams] = useSearchParams();
-    const id = serchParams.get("id");
+import { useForm } from "react-hook-form"
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
-    const [faqUpdateCategory] = useFaqUpdateCategoryMutation()
-    const test = useFaqUpdateCategoryMutation()
-    const [queryId, setQueryID] = useState(null);
-    const { data } = useFaqCategoryIdQuery(id);
-    useEffect(() => {
-
-        setQueryID(data?.results.id)
-    }, [data]);
-    const doSome = () => {
-        faqUpdateCategory({ id, body: getValues("title") });
-    }
+const TableReusableCategory = ({ onSubmit, data }) => {
+    const { id } = useParams()
+    const path = useLocation();
+    const fieldForEditCategory = path.pathname === "/faq-id";
 
     useEffect(() => {
         if (data) {
@@ -26,17 +15,24 @@ const TableOne = () => {
             setValue("list-order", data?.results?.listorder)
         }
     }, [data]);
+
     const {
         register,
-        handleSubmit,
         setValue,
-        getValues,
         formState: { errors },
+        getValues,
+        handleSubmit
     } = useForm()
 
+    const getFields = () => {
+        const title = getValues("title");
+        const listOrder = getValues("list-order")
+        const language = getValues("language")
+        onSubmit({ title, listOrder, language, id })
+    }
+
     return (
-        /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-        <form onSubmit={handleSubmit(doSome)} style={{ 'display': 'flex', 'flexDirection': 'column', 'gap': '5px' }}>
+        <form onSubmit={handleSubmit(getFields)} style={{ 'display': 'flex', 'flexDirection': 'column', 'gap': '5px' }}>
             <div className="grid grid-cols-1 gap-9">
                 <div className="flex flex-col gap-9">
                     {/* <!-- Contact Form --> */}
@@ -44,7 +40,7 @@ const TableOne = () => {
 
                         <div className="p-6.5">
 
-                            <div className="mb-4.5">
+                            {fieldForEditCategory ? <div className="mb-4.5">
                                 <label className="mb-1.5 block font-medium text-black dark:text-white">
                                     Id
                                 </label>
@@ -53,14 +49,14 @@ const TableOne = () => {
                                     disabled
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-black"
                                 />
-                            </div>
+                            </div> : null}
                             <div className="mb-4.5">
                                 <label className="mb-1.5 block font-medium text-black dark:text-white">
                                     Language
                                 </label>
                                 <input
                                     type="text" {...register("language")}
-                                    disabled
+                                    disabled={fieldForEditCategory}
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-black"
                                 />
                             </div>
@@ -70,7 +66,7 @@ const TableOne = () => {
                                 </label>
                                 <input
                                     type="number" {...register("list-order")}
-                                    disabled
+                                    disabled={fieldForEditCategory}
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary dark:disabled:bg-black"
                                 />
                             </div>
@@ -85,7 +81,6 @@ const TableOne = () => {
                                 />
                                 {errors.title && <p>Title is required.</p>}
                             </div>
-
                             <input type="submit" />
                         </div>
 
@@ -95,4 +90,4 @@ const TableOne = () => {
         </form>
     )
 }
-export default TableOne
+export default TableReusableCategory;
