@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useFaqCategoryListQuery, useFaqDeleteCategoryMutation } from "../api/faqCategories";
+import { useFaqCategoryListQuery } from "../api/faqCategories";
 import { useNavigate } from "react-router-dom";
 import PaginationNav from "./PaginationNavPresentation";
 import ModalDeleteCategory from "./ModalDeleteCategory";
+import useCategory from "../hooks/useCateogory";
 
 const TableThree = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -11,10 +12,7 @@ const TableThree = () => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [langForQuery, setLangForQuery] = useState("all");
   const [deleteId, setDeleteId] = useState(null);
-  // const [showModal, setShowModal] = useState(false);
-  const [faqDeleteCategory] = useFaqDeleteCategoryMutation();
-  // const [faqDe] = useFaqDeleteCategoryMutation();
-
+  const { deleteCategory } = useCategory();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = (id) => {
@@ -26,26 +24,30 @@ const TableThree = () => {
     setIsModalOpen(false);
     setDeleteId(null)
   };
-  // const [faqCategoryList]=useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage });
-  const deleteCategory = () => {
-
-    console.log("cat for delete - " + deleteId);
-    faqDeleteCategory(deleteId).unwrap().then(() => {
+  const deleteCategoryFunc = async () => {
+    const response = await deleteCategory(deleteId);
+    if (response) {
       closeModal()
-    });
+    }
+
   }
 
   const navigate = useNavigate();
-  const { data: faqList } = useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage })
+  const { data: faqList, error } = useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage })
 
   const handlePerPageChange = (e: { target: { value: string; }; }) => {
     const newValue = parseInt(e.target.value, 10);
     setPerPage(newValue);
   };
-
+ 
   useEffect(() => {
     if (faqList) setPagionation(faqList.totalRows / faqList.rowsPerPage)
-  }, [faqList])
+    else if (error?.status === 401) {
+      
+      localStorage.removeItem("userToken"); 
+      navigate('/auth/signin')      
+    }
+  }, [faqList, error])
 
   const handleCheckboxChange = (event: any) => {
     const { value, checked } = event.target;
@@ -261,7 +263,7 @@ const TableThree = () => {
               </div>
             )
           })}
-          <ModalDeleteCategory isOpen={isModalOpen} onClose={closeModal} deleteCat={() => deleteCategory()} />
+          <ModalDeleteCategory isOpen={isModalOpen} onClose={closeModal} deleteCat={() => deleteCategoryFunc()} />
           {/* {showModal && <ModalDeleteCategory onClose={()=>setShowModal(false)}/>} */}
 
         </div>

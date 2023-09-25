@@ -1,18 +1,31 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl } from '../urlForAPis';
 
+import { logout } from '../features/auth/authSlice';
+
+const baseQuerySingle = fetchBaseQuery({
+  baseUrl,
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.userToken;
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+      return headers;
+    }
+  },
+});
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuerySingle(args, api, extraOptions);
+  console.log(result)
+  if (result?.error?.status === 401) {
+    api.dispatch(logout());
+    localStorage.removeItem('userToken');
+  } else {
+    return result;
+  }
+};
 export const faqCategoriesApi = createApi({
   reducerPath: 'faqCategoriesApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.userToken;
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-        return headers;
-      }
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['CategoryList'],
   endpoints: (builder) => ({
     faqCategoryId: builder.query({
@@ -46,6 +59,7 @@ export const faqCategoriesApi = createApi({
           body: { title, language, listOrder },
         };
       },
+      invalidatesTags: ['CategoryList'],
     }),
     faqDeleteCategory: builder.mutation({
       query: (id) => {

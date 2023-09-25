@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useGetUserDetailsQuery } from '../api/auth'
-import { setCredentials } from '../features/auth/authSlice';
+import { logout, setCredentials } from '../features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from "../app/store";
 // import { useGetFaqListCategoriesQuery } from '../api/faqCategories';
 
@@ -25,11 +25,12 @@ const DropdownUser = () => {
     pollingInterval: 900000, // 15mins
   })
 
-
+  console.log(data);
   useEffect(() => {
     // const {data1}=useFaqListCategories; 
     // getFaqListCategoriesAll()
     // console.log(useFaqListCategories);
+    console.log(data);
     if (data) { console.log(userInfo); dispatch(setCredentials(data)) }
   }, [data, dispatch])
 
@@ -76,6 +77,7 @@ const DropdownUser = () => {
                 : "You're not logged in"}
           </span>
           <span className="block text-xs">UX Designer</span>
+          <button onClick={() => dispatch(logout())}>log out</button>
         </span>
 
       </Link>

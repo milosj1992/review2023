@@ -2,20 +2,20 @@ import { useForm } from "react-hook-form";
 import { useFaqAddCategoryMutation } from "../api/faqCategories"
 import TableReusableCategory from "./TableReusableCategory";
 import ModalDeleteCategory from "./ModalDeleteCategory";
-
+import useCateogory from "../hooks/useCateogory";
 const TableAddCategory = () => {
 
-    const [FaqAddCategory] = useFaqAddCategoryMutation();
+    const { addCategory } = useCateogory();
 
-   
     const getFields = ({ title, listOrder, language }) => {
-        FaqAddCategory({ title, language, listOrder })
+        addCategory({ title, language, listOrder })
+
     }
 
     return (
         <div>
             TableAddCategory
-            <ModalDeleteCategory/>
+            <ModalDeleteCategory />
             <TableReusableCategory onSubmit={getFields} />
         </div>
     )

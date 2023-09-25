@@ -6,7 +6,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 //                     : "text-red-300 bg-primary cursor-not-allowed"
 //                 
  function Button2({ content, onClick, active, disabled }) {
-    console.log(active);
+    
     return (
         <button
             className={`flex flex-col cursor-pointer items-center justify-center w-9 h-9 shadow-[0_4px_10px_rgba(0,0,0,0.03)] text-sm font-normal transition-colors rounded-lg
@@ -34,10 +34,7 @@ const PaginationNav = ({
         
         pageCount=Math.ceil(pageCount);
         pageRows=Math.ceil(pageRows);
-        console.log(pageCount);
-        console.log(pageRows);
         if (pageCount === 0) return null;
-        console.log(pageRows)
         // const visiblePageButtonCount = 3;
         const visiblePageButtonCount = 3;
         let numberOfButtons =

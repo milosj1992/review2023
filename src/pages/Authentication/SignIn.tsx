@@ -1,29 +1,43 @@
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
-import { userLogin } from '../../features/auth/authActions';
+import { isAuthed, userLogin } from '../../features/auth/authActions';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form"
+import { setCredentials } from '../../features/auth/authSlice';
+import axios from 'axios';
 
 const SignIn = () => {
   interface UserData {
     username: string;
     password: string;
   }
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    getValues,
+    handleSubmit
+  } = useForm()
   const navigate = useNavigate()
   const dispatch = useAppDispatch();
   const { userToken } = useAppSelector((state) => state.auth);
+  // const nesto = useAppSelector((state) => state.auth);
+
+
   const data: UserData = { username: "PetarTomic", password: "Petar031" }
   useEffect(() => {
-    
-    if (userToken) {
+     
+    if (userToken) { 
       navigate('/')
     }
-    else{
-      dispatch(userLogin(data)) 
-    }
-    // dispatch(userLogin(data)) 
-  }, []);
+
+  }, [userToken]);
+
+  const onSubmit = async () => {
+    dispatch(userLogin(data))
+  }
 
   return (
     <>
@@ -173,14 +187,16 @@ const SignIn = () => {
                 Sign In to TailAdmin
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
+
+                      type="username"
+                      {...register("username", { required: true })}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -212,6 +228,7 @@ const SignIn = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      {...register("password")}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -293,6 +310,7 @@ const SignIn = () => {
                     </Link>
                   </p>
                 </div>
+
               </form>
             </div>
           </div>

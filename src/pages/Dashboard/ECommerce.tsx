@@ -8,17 +8,17 @@ const ECommerce = () => {
     password: string;
 }
 // const auth = useAppSelector((state) => state.auth)
-const { userInfo } =  useAppSelector((state) => state.auth)
-const auth =  useAppSelector((state) => state.auth)
+// const { userInfo } =  useAppSelector((state) => state.auth)
+// const auth =  useAppSelector((state) => state.auth)
   
  
-// const dispatch = useAppDispatch(); 
-// const data: UserData = { username: "kminchelle", password: "0lelplR" }
-useEffect(() => {
+// // const dispatch = useAppDispatch(); 
+// // const data: UserData = { username: "kminchelle", password: "0lelplR" }
+// useEffect(() => {
   
-     console.log(auth)
-     console.log(userInfo);  
-}, []); 
+//      console.log(auth)
+//      console.log(userInfo);  
+// }, []); 
   return ( 
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
