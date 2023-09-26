@@ -1,12 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
-import { isAuthed, userLogin } from '../../features/auth/authActions';
+import {  useNavigate } from 'react-router-dom';
+
+import {  userLogin } from '../../features/auth/authActions';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form"
-import { setCredentials } from '../../features/auth/authSlice';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 
 const SignIn = () => {
   interface UserData {
@@ -18,26 +16,36 @@ const SignIn = () => {
     setValue,
     formState: { errors },
     getValues,
-    handleSubmit
-  } = useForm()
-  const navigate = useNavigate()
+    setError,
+    handleSubmit,
+  } = useForm();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { userToken } = useAppSelector((state) => state.auth);
+  const { error: errorAuth } = useAppSelector((state) => state.auth);
   // const nesto = useAppSelector((state) => state.auth);
 
-
-  const data: UserData = { username: "PetarTomic", password: "Petar031" }
+  // const data: UserData = { username: 'PetarTomic', password: 'Petar0311' };
   useEffect(() => {
-     
-    if (userToken) { 
-      navigate('/')
+    // console.log(nesto);
+    if (userToken) {
+      navigate('/');
     }
+    if (errorAuth) {
+      const formError = {
+        message: 'Username or Password Incorrect',
+      };
+      // set same error in both:
+      setError('password', formError);
+      setError('username', formError);
+    }
+  }, [userToken, errorAuth]);
 
-  }, [userToken]);
-
-  const onSubmit = async () => {
-    dispatch(userLogin(data))
-  }
+  const onSubmit = async (data) => {
+    const { username, password } = data;
+    dispatch(userLogin({ username, password }));
+  };
 
   return (
     <>
@@ -45,15 +53,12 @@ const SignIn = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
+              {/* <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
+              </Link> */}
 
-              <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
-              </p>
+              <p className="2xl:px-20">FAQ Admin panel</p>
 
               <span className="mt-15 inline-block">
                 <svg
@@ -182,25 +187,42 @@ const SignIn = () => {
 
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <span className="mb-1.5 block font-medium">Start for free</span>
+              {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to TailAdmin
+                Sign In to FAQ Admin panel
               </h2>
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                    Username
                   </label>
                   <div className="relative">
                     <input
-
                       type="username"
-                      {...register("username", { required: true })}
+                      {...register('username', {
+                        required: 'Username is required',
+                        minLength: {
+                          value: 6,
+                          message:
+                            'Username must be at least 6 characters long',
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: 'Username must not exceed 20 characters',
+                        },
+                        pattern: {
+                          value: /^[a-zA-Z0-9_]+$/,
+                          message:
+                            'Username can only contain letters, numbers, and underscores',
+                        },
+                      })}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
-
+                    {errors.username && (
+                      <p className="text-danger">{errors.username.message}</p>
+                    )}
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
@@ -212,9 +234,13 @@ const SignIn = () => {
                       >
                         <g opacity="0.5">
                           <path
-                            d="M19.2516 3.30005H2.75156C1.58281 3.30005 0.585938 4.26255 0.585938 5.46567V16.6032C0.585938 17.7719 1.54844 18.7688 2.75156 18.7688H19.2516C20.4203 18.7688 21.4172 17.8063 21.4172 16.6032V5.4313C21.4172 4.26255 20.4203 3.30005 19.2516 3.30005ZM19.2516 4.84692C19.2859 4.84692 19.3203 4.84692 19.3547 4.84692L11.0016 10.2094L2.64844 4.84692C2.68281 4.84692 2.71719 4.84692 2.75156 4.84692H19.2516ZM19.2516 17.1532H2.75156C2.40781 17.1532 2.13281 16.8782 2.13281 16.5344V6.35942L10.1766 11.5157C10.4172 11.6875 10.6922 11.7563 10.9672 11.7563C11.2422 11.7563 11.5172 11.6875 11.7578 11.5157L19.8016 6.35942V16.5688C19.8703 16.9125 19.5953 17.1532 19.2516 17.1532Z"
+                            d="M11.0008 9.52185C13.5445 9.52185 15.607 7.5281 15.607 5.0531C15.607 2.5781 13.5445 0.584351 11.0008 0.584351C8.45703 0.584351 6.39453 2.5781 6.39453 5.0531C6.39453 7.5281 8.45703 9.52185 11.0008 9.52185ZM11.0008 2.1656C12.6852 2.1656 14.0602 3.47185 14.0602 5.08748C14.0602 6.7031 12.6852 8.00935 11.0008 8.00935C9.31641 8.00935 7.94141 6.7031 7.94141 5.08748C7.94141 3.47185 9.31641 2.1656 11.0008 2.1656Z"
                             fill=""
-                          />
+                          ></path>
+                          <path
+                            d="M13.2352 11.0687H8.76641C5.08828 11.0687 2.09766 14.0937 2.09766 17.7719V20.625C2.09766 21.0375 2.44141 21.4156 2.88828 21.4156C3.33516 21.4156 3.67891 21.0719 3.67891 20.625V17.7719C3.67891 14.9531 5.98203 12.6156 8.83516 12.6156H13.2695C16.0883 12.6156 18.4258 14.9187 18.4258 17.7719V20.625C18.4258 21.0375 18.7695 21.4156 19.2164 21.4156C19.6633 21.4156 20.007 21.0719 20.007 20.625V17.7719C19.9039 14.0937 16.9133 11.0687 13.2352 11.0687Z"
+                            fill=""
+                          ></path>
                         </g>
                       </svg>
                     </span>
@@ -223,15 +249,24 @@ const SignIn = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password
                   </label>
                   <div className="relative">
                     <input
                       type="password"
-                      {...register("password")}
-                      placeholder="6+ Characters, 1 Capital letter"
+                      {...register('password', {
+                        required: 'You must specify a password',
+                        minLength: {
+                          value: 8,
+                          message: 'Password must have at least 8 characters',
+                        },
+                      })}
+                      placeholder="8+ Characters"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
+                    {errors.password && (
+                      <p className="text-danger">{errors.password.message}</p>
+                    )}
 
                     <span className="absolute right-4 top-4">
                       <svg
@@ -265,7 +300,7 @@ const SignIn = () => {
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -300,17 +335,16 @@ const SignIn = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
-                <div className="mt-6 text-center">
+                {/* <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{' '}
                     <Link to="/auth/signup" className="text-primary">
                       Sign Up
                     </Link>
                   </p>
-                </div>
-
+                </div> */}
               </form>
             </div>
           </div>
