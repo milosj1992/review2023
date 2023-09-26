@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../app/store';
 
 const DropdownUser = () => {
   const { userInfo } = useAppSelector((state) => state.auth);
-  const faq = useAppSelector((state) => state.FaqCategories);
+  // const faq = useAppSelector((state) => state.FaqCategories);
 
   const dispatch = useAppDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
