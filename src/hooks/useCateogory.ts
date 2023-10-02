@@ -1,31 +1,39 @@
 import { useCallback } from 'react';
 import {
   useFaqAddCategoryMutation,
-  useFaqDeleteCategoryMutation
+  useFaqDeleteCategoryMutation,
 } from '../api/faqCategories';
 import { useNavigate } from 'react-router-dom';
 
+interface CategoryData {
+  title: string;
+  language: string;
+  listOrder: number;
+}
+
 const useCategory = () => {
   const navigate = useNavigate();
+  
   const [FaqAddCategory] = useFaqAddCategoryMutation();
   const [faqDeleteCategory] = useFaqDeleteCategoryMutation();
-  
+
   const addCategory = useCallback(
-    async ({ title, language, listOrder }) => {
-      const data = await FaqAddCategory({
+    async (data: CategoryData) => {
+      const { title, language, listOrder } = data;
+      const result = await FaqAddCategory({
         title,
         language,
         listOrder,
       }).unwrap();
-      if (data != null) {
-        //if update success
+
+      if (result != null) {
         navigate('/faq-category');
       }
     },
     [FaqAddCategory, navigate],
   );
   const deleteCategory = useCallback(
-    async (id) => {
+    async (id: number) => {
       const data = await faqDeleteCategory(id).unwrap();
       if (data != null) {
         return true;

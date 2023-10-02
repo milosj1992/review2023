@@ -1,45 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { userLogin } from './authActions';
+import { LoginResponse, User } from '../../models/LoginResponse';
 
-// initialize userToken from local storage
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
-  : null;
-/**
- * {
-  "id": 15,
-  "username": "kminchelle",
-  "email": "kminchelle@qq.com",
-  "firstName": "Jeanne",
-  "lastName": "Halvorson",
-  "gender": "female",
-  "image": "https://robohash.org/autquiaut.png",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInVzZXJuYW1lIjoia21pbmNoZWxsZSIsImVtYWlsIjoia21pbmNoZWxsZUBxcS5jb20iLCJmaXJzdE5hbWUiOiJKZWFubmUiLCJsYXN0TmFtZSI6IkhhbHZvcnNvbiIsImdlbmRlciI6ImZlbWFsZSIsImltYWdlIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvYXV0cXVpYXV0LnBuZyIsImlhdCI6MTY5MjE5ODYxMiwiZXhwIjoxNjkyMjAyMjEyfQ.t2dExC1LcSAE0YXvh6E-kIbB15Z-a5-ZekGLdb3fWbI"
-}
- */
-// export type User = {
-//   username: string;
-//   email: string;
-//   role: 'admin' | 'user' | 'moderator';
-// };
-export interface User {
-  email: string;
-  firstName: string;
-  gender: string;
-  id: number | null;
-  image: string;
-  lastName: string;
-  token: string;
-  username: string;
-}
-
-export interface AuthStateType {
+interface AuthStateType {
   loading: boolean;
   userInfo: User | null;
   userToken: string | null;
-  error: string;
+  error: string | null;
   success: boolean;
 }
+
+const userToken = localStorage.getItem('userToken')
+  ? localStorage.getItem('userToken')
+  : null;
 
 const initialState: AuthStateType = {
   loading: false,
@@ -64,19 +37,42 @@ const authSlice = createSlice({
       state.userInfo = payload;
     },
   },
-  extraReducers: {
-    // login user
-    [userLogin.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [userLogin.fulfilled]: (state, { payload }) => {
-      (state.loading = false), (state.userToken = payload.data.userToken);
-    },
-    [userLogin.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(
+        userLogin.pending,
+        (state: { loading: boolean; error: string | null }) => {
+          state.loading = true;
+          state.error = null;
+        },
+      )
+      .addCase(
+        userLogin.fulfilled,
+        (
+          state: AuthStateType,
+          {
+            payload,
+          }: PayloadAction<{
+            data: LoginResponse;
+          }>,
+        ) => {
+          console.log(payload);
+          state.loading = false;
+          state.error = null;
+          state.userToken = payload.data.userToken;
+        },
+      )
+      .addCase(
+        userLogin.rejected,
+        (
+          state: { loading: boolean; error: string | null },
+          { payload }: PayloadAction<any>,
+        ) => {
+          console.log(payload);
+          state.loading = false;
+          state.error = payload;
+        },
+      );
   },
 });
 

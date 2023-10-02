@@ -14,17 +14,13 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/axios": "^0.14.0",
     "@windmill/react-ui": "^0.6.0",
     "angular": "^1.6.10",
     "apexcharts": "^3.41.0",
     "axios": "^1.5.0",
     "boostrap": "^2.0.0",
     "headlessui": "^0.0.0",
-    "heroicons": "^2.0.18",
     "jsvectormap": "^1.5.3",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
