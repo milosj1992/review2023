@@ -1,26 +1,27 @@
-import { useSearchParams } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { useFaqCategoryIdQuery, useFaqUpdateCategoryMutation } from "../api/faqCategories";
-import TableReusableCategory from "./TableReusableCategory";
-import { useState } from "react";
+import { useSearchParams } from 'react-router-dom';
+
+import {
+  useFaqCategoryIdQuery,
+  useFaqUpdateCategoryMutation,
+} from '../api/faqCategories';
+import TableReusableCategory from './TableReusableCategory';
+
 const TableOne = () => {
-    const [serchParams] = useSearchParams();
-    const id = serchParams.get("id");
-    const [faqUpdateCategory] = useFaqUpdateCategoryMutation()
-    
-    const { data } = useFaqCategoryIdQuery(id);
+  const [serchParams] = useSearchParams();
+  const id = serchParams.get('id');
+  const [faqUpdateCategory] = useFaqUpdateCategoryMutation();
 
-    const getFields = ({ title }) => {
+  const { data } = useFaqCategoryIdQuery(id);
 
-        faqUpdateCategory({ id, title });
-    }
+  const getFields = ({ title }: { title: string }) => {
+    faqUpdateCategory({ id, title });
+  };
 
-    return (
-
-        <div>
-            TableAddCategory
-            <TableReusableCategory onSubmit={getFields} data={data} />
-        </div>
-    )
-}
-export default TableOne
+  return (
+    <div>
+      TableAddCategory
+      <TableReusableCategory onSubmit={getFields} data={data} />
+    </div>
+  );
+};
+export default TableOne;

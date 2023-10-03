@@ -1,65 +1,75 @@
-import { useState, useEffect } from "react";
-import { useFaqCategoryListQuery } from "../api/faqCategories";
-import { useNavigate } from "react-router-dom";
-import PaginationNav from "./PaginationNavPresentation";
-import ModalDeleteCategory from "./ModalDeleteCategory";
-import useCategory from "../hooks/useCateogory";
-
+import { useState, useEffect } from 'react';
+import { useFaqCategoryListQuery } from '../api/faqCategories';
+import { useNavigate } from 'react-router-dom';
+import PaginationNav from './PaginationNavPresentation';
+import ModalDeleteCategory from './ModalDeleteCategory';
+import useCategory from '../hooks/useCateogory';
+//id,ime,jezik,listOrder
+interface FaqItem {
+  id: number;
+  ime: string;
+  jezik: string;
+  listorder: number;
+}
 const TableThree = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [perPage, setPerPage] = useState(8);
   const [pagination, setPagionation] = useState(1);
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
-  const [langForQuery, setLangForQuery] = useState("all");
-  const [deleteId, setDeleteId] = useState(null);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [langForQuery, setLangForQuery] = useState('all');
+  const [deleteId, setDeleteId] = useState<null | number>(null);
   const { deleteCategory } = useCategory();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (id) => {
+  const openModal = (id: number | null) => {
     setIsModalOpen(true);
-    setDeleteId(id)
+    setDeleteId(id);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setDeleteId(null)
+    setDeleteId(null);
   };
   const deleteCategoryFunc = async () => {
-    const response = await deleteCategory(deleteId);
-    if (response) {
-      closeModal()
+    if (deleteId != null) {
+      const response = await deleteCategory(deleteId);
+      if (response) {
+        closeModal();
+      }
     }
-
-  }
+  };
 
   const navigate = useNavigate();
-  const { data: faqList, error } = useFaqCategoryListQuery({ lang: langForQuery, page: pageIndex + 1, rowsPerPage: perPage })
+  const { data: faqList, error } = useFaqCategoryListQuery({
+    lang: langForQuery,
+    page: pageIndex + 1,
+    rowsPerPage: perPage,
+  });
 
-  const handlePerPageChange = (e: { target: { value: string; }; }) => {
+  const handlePerPageChange = (e: { target: { value: string } }) => {
     const newValue = parseInt(e.target.value, 10);
     setPerPage(newValue);
   };
- 
+
   useEffect(() => {
-    if (faqList) setPagionation(faqList.totalRows / faqList.rowsPerPage)
+    if (faqList) setPagionation(faqList.totalRows / faqList.rowsPerPage);
     else if (error?.status === 401) {
-      
-      localStorage.removeItem("userToken"); 
-      navigate('/auth/signin')      
+      localStorage.removeItem('userToken');
+      navigate('/auth/signin');
     }
-  }, [faqList, error])
+  }, [faqList, error]);
 
   const handleCheckboxChange = (event: any) => {
     const { value, checked } = event.target;
 
     if (checked) {
-      setSelectedLanguages((prevSelectedLanguages: any) => [
+      setSelectedLanguages((prevSelectedLanguages: string[]) => [
         ...prevSelectedLanguages,
-        value
+        value,
       ]);
     } else {
       setSelectedLanguages((prevSelectedLanguages) =>
-        prevSelectedLanguages.filter((lang) => lang !== value)
+        prevSelectedLanguages.filter((lang) => lang !== value),
       );
     }
   };
@@ -71,13 +81,11 @@ const TableThree = () => {
     const langParam = selectedLanguages.join(',');
 
     console.log(langParam);
-    if (langParam != "") {
+    if (langParam != '') {
       setLangForQuery(langParam);
+    } else {
+      setLangForQuery('all');
     }
-    else {
-      setLangForQuery("all");
-    }
-
   };
   return (
     <>
@@ -96,10 +104,10 @@ const TableThree = () => {
                 <option value="4">4</option>
                 <option value="8">8</option>
                 <option value="16">16</option>
-
               </select>
-              <h4 className="inline-flex text-l font-semibold text-black dark:text-white capitalize ">entries per page</h4>
-
+              <h4 className="inline-flex text-l font-semibold text-black dark:text-white capitalize ">
+                entries per page
+              </h4>
             </label>
           </div>
         </div>
@@ -154,7 +162,9 @@ const TableThree = () => {
             Sweden (SE)
           </label>
           <br />
-          <button onClick={() => console.log(generateQuery())}>Generate Query</button>
+          <button onClick={() => console.log(generateQuery())}>
+            Generate Query
+          </button>
         </div>
         <div className="flex flex-col">
           <div className="grid grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-4 max-md:grid-cols-3">
@@ -189,11 +199,16 @@ const TableThree = () => {
               </h5>
             </div>
           </div>
-          {faqList?.results?.map((faqItem: any) => {
+          {faqList?.results?.map((faqItem: FaqItem) => {
             return (
-              <div className="grid grid-cols-6 border-b border-stroke dark:border-strokedark max-md:grid-cols-3" key={faqItem.id}>
+              <div
+                className="grid grid-cols-6 border-b border-stroke dark:border-strokedark max-md:grid-cols-3"
+                key={faqItem.id}
+              >
                 <div className="flex items-center gap-3 p-2.5 xl:p-5">
-                  <p className="flex items-center  text-black dark:text-white h-12">{faqItem.ime}</p>
+                  <p className="flex items-center  text-black dark:text-white h-12">
+                    {faqItem.ime}
+                  </p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5">
                   <p className="text-meta-3">{faqItem.jezik}</p>
@@ -208,7 +223,12 @@ const TableThree = () => {
                   <p className="text-meta-5">{faqItem.id}</p>
                 </div>
                 <div className="flex items-center justify-center p-2.5 xl:p-5 space-x-1.5 max-md:justify-around gap-2">
-                  <button className="hover:text-primary" onClick={() => navigate("/faq-category-edit?id=" + faqItem.id)}>
+                  <button
+                    className="hover:text-primary"
+                    onClick={() =>
+                      navigate('/faq-category-edit?id=' + faqItem.id)
+                    }
+                  >
                     <svg
                       className="fill-current"
                       width="18"
@@ -230,7 +250,10 @@ const TableThree = () => {
                       </defs>
                     </svg>
                   </button>
-                  <button className="hover:text-primary" onClick={() => openModal(faqItem.id)}>
+                  <button
+                    className="hover:text-primary"
+                    onClick={() => openModal(faqItem.id)}
+                  >
                     <svg
                       className="fill-current"
                       width="18"
@@ -257,17 +280,17 @@ const TableThree = () => {
                       />
                     </svg>
                   </button>
-
                 </div>
-
               </div>
-            )
+            );
           })}
-          <ModalDeleteCategory isOpen={isModalOpen} onClose={closeModal} deleteCat={() => deleteCategoryFunc()} />
+          <ModalDeleteCategory
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            deleteCat={() => deleteCategoryFunc()}
+          />
           {/* {showModal && <ModalDeleteCategory onClose={()=>setShowModal(false)}/>} */}
-
         </div>
-
       </div>
 
       <div className="flex justify-end gap-3 flex-wrap px-6 pb-12">
@@ -279,10 +302,7 @@ const TableThree = () => {
           pageRows={pagination}
           pageIndex={pageIndex}
         />
-
       </div>
-
-
     </>
   );
 };

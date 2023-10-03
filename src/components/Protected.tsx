@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/store";
-import { Navigate } from "react-router-dom";
-
-const Protected = ({ children }) => {
+import { useAppSelector } from '../app/store';
+import { Navigate } from 'react-router-dom';
+import { ReactNode } from 'react';
+const Protected = ({ children }: { children: ReactNode }) => {
   const { userToken } = useAppSelector((state) => state.auth);
 
   if (!userToken) {

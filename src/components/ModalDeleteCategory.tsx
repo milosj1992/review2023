@@ -1,13 +1,19 @@
-
 import ReactDOM from 'react-dom';
 
-const ModalDeleteCategory = ({ isOpen, onClose ,deleteCat}) => {
+interface Modal {
+  isOpen: boolean;
+  onClose: () => void;
+  deleteCat: () => void;
+}
+
+const deleteModalRoot: HTMLElement | null =
+  document.getElementById('delete-modal-root')!;
+
+const ModalDeleteCategory = ({ isOpen, onClose, deleteCat }: Modal) => {
   if (!isOpen) return null;
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-opacity-90 bg-black">
-      <div
-        className="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5"
-      >
+      <div className="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5">
         {/* Your modal content here */}
         <span className="mx-auto inline-block">
           <svg
@@ -24,8 +30,8 @@ const ModalDeleteCategory = ({ isOpen, onClose ,deleteCat}) => {
           Deactivate Your Account
         </h3>
         <p className="mb-10 font-medium">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry
-          Lorem Ipsum been.
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry Lorem Ipsum been.
         </p>
         <div className="-mx-3 flex flex-wrap gap-y-4">
           <div className="w-full px-3 2xsm:w-1/2">
@@ -37,7 +43,8 @@ const ModalDeleteCategory = ({ isOpen, onClose ,deleteCat}) => {
             </button>
           </div>
           <div className="w-full px-3 2xsm:w-1/2">
-            <button onClick={()=>deleteCat()}
+            <button
+              onClick={() => deleteCat()}
               className="block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90"
             >
               Deactivate
@@ -45,8 +52,9 @@ const ModalDeleteCategory = ({ isOpen, onClose ,deleteCat}) => {
           </div>
         </div>
       </div>
-    </div>
-    , document.getElementById('delete-modal-root'));
-}
+    </div>,
+    deleteModalRoot,
+  );
+};
 
 export default ModalDeleteCategory;
