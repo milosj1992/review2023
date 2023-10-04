@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import PaginationNav from './PaginationNavPresentation';
 import ModalDeleteCategory from './ModalDeleteCategory';
 import useCategory from '../services/hooks/useCateogory';
-//id,ime,jezik,listOrder
+
 interface FaqItem {
   id: number;
   ime: string;
   jezik: string;
   listorder: number;
 }
+
 const TableThree = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [perPage, setPerPage] = useState(8);

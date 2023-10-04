@@ -7,9 +7,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 interface CategoryData {
-  id?: number | null;
+  id?: string | null;
   title: string;
-  language: string;
+  language?: string;
   listOrder?: number;
 }
 
