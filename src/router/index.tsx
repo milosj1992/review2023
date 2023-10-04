@@ -5,7 +5,7 @@ import Protected from '../components/Protected';
 import SignIn from '../pages/Authentication/SignIn';
 
 const Tables = lazy(() => import('../pages/Tables'));
-const DefaultLayout = lazy(() => import('../layout/DefaultLayout'));
+const DefaultLayout = lazy(() => import('../components/layout/DefaultLayout'));
 const TableEditCategory = lazy(() => import('../components/TableEditCategory'));
 const TableAddCategory = lazy(() => import('../components/TableAddCategory'));
 

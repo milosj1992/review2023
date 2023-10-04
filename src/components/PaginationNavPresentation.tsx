@@ -13,11 +13,10 @@ const Button2 = ({ content, onClick, active, disabled }: ButtonPagination) => {
   return (
     <button
       className={`flex flex-col cursor-pointer items-center justify-center w-9 h-9 shadow-[0_4px_10px_rgba(0,0,0,0.03)] text-sm font-normal transition-colors rounded-lg
-             ${
-               active
-                 ? 'bg-primary text-white dark:bg-white dark:text-primary'
-                 : 'bg-white dark:bg-primary dark:text-white text-black'
-             }
+             ${active
+          ? 'bg-primary text-white dark:bg-white dark:text-primary'
+          : 'bg-white dark:bg-primary dark:text-white text-black'
+        }
              `}
       onClick={onClick}
       disabled={disabled}

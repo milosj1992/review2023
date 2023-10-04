@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useFaqCategoryListQuery } from '../api/faqCategories';
+import { useFaqCategoryListQuery } from '../services/api/faqCategories';
 import { useNavigate } from 'react-router-dom';
 import PaginationNav from './PaginationNavPresentation';
 import ModalDeleteCategory from './ModalDeleteCategory';
-import useCategory from '../hooks/useCateogory';
+import useCategory from '../services/hooks/useCateogory';
 //id,ime,jezik,listOrder
 interface FaqItem {
   id: number;

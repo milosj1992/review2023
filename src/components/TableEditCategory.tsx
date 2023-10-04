@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   useFaqCategoryIdQuery,
   useFaqUpdateCategoryMutation,
-} from '../api/faqCategories';
+} from '../services/api/faqCategories';
 import TableReusableCategory from './TableReusableCategory';
 
 const TableOne = () => {

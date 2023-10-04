@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useGetUserDetailsQuery } from '../api/auth';
-import { logout, setCredentials } from '../features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '../app/store';
+import { useGetUserDetailsQuery } from '../services/api/auth';
+import { logout, setCredentials } from '../services/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../services/app/store';
 // import { useGetFaqListCategoriesQuery } from '../api/faqCategories';
 
 // import UserOne from '../images/user/user-01.png';
@@ -70,8 +70,8 @@ const DropdownUser = () => {
             {isFetching
               ? null
               : userInfo !== null
-              ? `Logged in as ${userInfo?.email}`
-              : "You're not logged in"}
+                ? `Logged in as ${userInfo?.email}`
+                : "You're not logged in"}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>

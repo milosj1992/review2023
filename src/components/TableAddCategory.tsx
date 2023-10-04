@@ -1,7 +1,7 @@
 import TableReusableCategory from './TableReusableCategory';
 import ModalDeleteCategory from './ModalDeleteCategory';
-import useCateogory from '../hooks/useCateogory';
-import { TableCateogry } from '../models/Category';
+import useCateogory from '../services/hooks/useCateogory';
+import { TableCateogry } from '../services/models/Category';
 const TableAddCategory = () => {
   const { addCategory } = useCateogory();
 

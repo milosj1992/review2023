@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { userLogin } from '../../features/auth/authActions';
-import { useAppDispatch, useAppSelector } from '../../app/store';
+import { userLogin } from '../../services/features/auth/authActions';
+import { useAppDispatch, useAppSelector } from '../../services/app/store';
 import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 const SignIn = () => {
-  
+
   interface UserData {
     username: string;
     password: string;

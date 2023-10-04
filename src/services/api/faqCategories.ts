@@ -1,4 +1,9 @@
-import { BaseQueryApi, FetchArgs, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  BaseQueryApi,
+  FetchArgs,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
 import { baseUrl } from '../urlForAPis';
 import { logout } from '../features/auth/authSlice';
 import { RootState } from '../app/store';
@@ -15,7 +20,7 @@ const baseQuerySingle = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth =async (
+const baseQueryWithReauth = async (
   args: string | FetchArgs,
   api: BaseQueryApi,
   extraOptions: {},
@@ -24,6 +29,7 @@ const baseQueryWithReauth =async (
   if ((result?.data as { statusCode?: number })?.statusCode === 401) {
     api.dispatch(logout());
     localStorage.removeItem('userToken');
+    return Promise.reject(result);
   } else {
     return result;
   }
@@ -78,7 +84,6 @@ export const faqCategoriesApi = createApi({
     }),
   }),
 });
-
 
 export const {
   useFaqCategoryIdQuery,

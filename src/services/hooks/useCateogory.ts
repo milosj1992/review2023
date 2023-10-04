@@ -13,7 +13,7 @@ interface CategoryData {
 
 const useCategory = () => {
   const navigate = useNavigate();
-  
+
   const [FaqAddCategory] = useFaqAddCategoryMutation();
   const [faqDeleteCategory] = useFaqDeleteCategoryMutation();
 

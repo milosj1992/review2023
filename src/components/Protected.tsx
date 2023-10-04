@@ -1,4 +1,4 @@
-import { useAppSelector } from '../app/store';
+import { useAppSelector } from '../services/app/store';
 import { Navigate } from 'react-router-dom';
 import { ReactNode } from 'react';
 const Protected = ({ children }: { children: ReactNode }) => {
