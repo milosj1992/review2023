@@ -14,7 +14,6 @@ const ModalDeleteCategory = ({ isOpen, onClose, deleteCat }: Modal) => {
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-9999 flex items-center justify-center bg-opacity-90 bg-black">
       <div className="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5">
-        {/* Your modal content here */}
         <span className="mx-auto inline-block">
           <svg
             width="60"
@@ -22,9 +21,7 @@ const ModalDeleteCategory = ({ isOpen, onClose, deleteCat }: Modal) => {
             viewBox="0 0 60 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* ... Your SVG content ... */}
-          </svg>
+          ></svg>
         </span>
         <h3 className="mt-5.5 pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
           Deactivate Your Account

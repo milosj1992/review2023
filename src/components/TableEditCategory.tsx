@@ -11,7 +11,6 @@ const TableOne = () => {
   const id = serchParams.get('id');
   const { editCategory } = useCateogory();
 
-
   const { data } = useFaqCategoryIdQuery(id);
 
   const getFields = ({ title }: { title: string }) => {

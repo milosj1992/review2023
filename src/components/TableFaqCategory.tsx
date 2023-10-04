@@ -287,7 +287,6 @@ const TableThree = () => {
             onClose={closeModal}
             deleteCat={() => deleteCategoryFunc()}
           />
-          {/* {showModal && <ModalDeleteCategory onClose={()=>setShowModal(false)}/>} */}
         </div>
       </div>
 

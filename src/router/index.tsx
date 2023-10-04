@@ -10,38 +10,43 @@ const TableEditCategory = lazy(() => import('../components/TableEditCategory'));
 const TableAddCategory = lazy(() => import('../components/TableAddCategory'));
 
 const router = createBrowserRouter([
-    {
-        errorElement: <div>error</div>,
-        element: <DefaultLayout />,
-        children: [
-            {
-                path: "/",
-                element: <Navigate to="/faq-category" />
-            },
-            {
-                path: '/faq-category',
-                element: <Protected>
-                    <Tables />
-                </Protected>,
-            },
-            {
-                path: '/faq-category-edit',
-                element: <Protected>
-                    <TableEditCategory />
-                </Protected>,
-            },
-            {
-                path: '/faq-category-add',
-                element: <Protected>
-                    <TableAddCategory />
-                </Protected>,
-            },
-        ]
-    },
-    {
-        path: "/auth/signin",
-        element: <SignIn />,
-    },
-
-])
-export default router
+  {
+    errorElement: <div>error</div>,
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/faq-category" />,
+      },
+      {
+        path: '/faq-category',
+        element: (
+          <Protected>
+            <Tables />
+          </Protected>
+        ),
+      },
+      {
+        path: '/faq-category-edit',
+        element: (
+          <Protected>
+            <TableEditCategory />
+          </Protected>
+        ),
+      },
+      {
+        path: '/faq-category-add',
+        element: (
+          <Protected>
+            <TableAddCategory />
+          </Protected>
+        ),
+      },
+    ],
+  },
+  {
+    path: '/auth/signin',
+    element: <SignIn />,
+  },
+]);
+export default router;
