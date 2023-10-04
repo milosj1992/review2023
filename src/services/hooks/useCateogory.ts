@@ -2,13 +2,15 @@ import { useCallback } from 'react';
 import {
   useFaqAddCategoryMutation,
   useFaqDeleteCategoryMutation,
+  useFaqUpdateCategoryMutation,
 } from '../api/faqCategories';
 import { useNavigate } from 'react-router-dom';
 
 interface CategoryData {
+  id?: number | null;
   title: string;
   language: string;
-  listOrder: number;
+  listOrder?: number;
 }
 
 const useCategory = () => {
@@ -16,6 +18,7 @@ const useCategory = () => {
 
   const [FaqAddCategory] = useFaqAddCategoryMutation();
   const [faqDeleteCategory] = useFaqDeleteCategoryMutation();
+  const [faqUpdateCategory] = useFaqUpdateCategoryMutation();
 
   const addCategory = useCallback(
     async (data: CategoryData) => {
@@ -32,6 +35,20 @@ const useCategory = () => {
     },
     [FaqAddCategory, navigate],
   );
+  const editCategory = useCallback(
+    async (data: CategoryData) => {
+      const { id, title } = data;
+      const result = await faqUpdateCategory({
+        id,
+        title,
+      }).unwrap();
+
+      if (result != null) {
+        navigate('/faq-category');
+      }
+    },
+    [faqUpdateCategory, navigate],
+  );
   const deleteCategory = useCallback(
     async (id: number) => {
       const data = await faqDeleteCategory(id).unwrap();
@@ -42,6 +59,6 @@ const useCategory = () => {
     [FaqAddCategory, navigate],
   );
 
-  return { addCategory, deleteCategory };
+  return { addCategory, deleteCategory, editCategory };
 };
 export default useCategory;

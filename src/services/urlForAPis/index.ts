@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.6:8000';
+const baseUrl = 'http://192.168.0.18:8000';
 
 axios.interceptors.response.use(
   function (response) {

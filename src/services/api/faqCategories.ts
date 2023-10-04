@@ -61,6 +61,7 @@ export const faqCategoriesApi = createApi({
           body: { id, title },
         };
       },
+      invalidatesTags: ['CategoryList'],
     }),
     faqAddCategory: builder.mutation({
       query: (payload) => {
