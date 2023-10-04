@@ -1,5 +1,4 @@
 import TableReusableCategory from './TableReusableCategory';
-import ModalDeleteCategory from './ModalDeleteCategory';
 import useCateogory from '../services/hooks/useCateogory';
 import { TableCateogry } from '../services/models/Category';
 const TableAddCategory = () => {
@@ -12,7 +11,6 @@ const TableAddCategory = () => {
 
   return (
     <div>
-      <ModalDeleteCategory />
       <TableReusableCategory onSubmit={getFields} />
     </div>
   );

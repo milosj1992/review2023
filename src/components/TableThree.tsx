@@ -40,7 +40,7 @@ const TableThree = () => {
   };
 
   const navigate = useNavigate();
-  const { data: faqList, error } = useFaqCategoryListQuery({
+  const { data: faqList } = useFaqCategoryListQuery({
     lang: langForQuery,
     page: pageIndex + 1,
     rowsPerPage: perPage,
@@ -53,11 +53,8 @@ const TableThree = () => {
 
   useEffect(() => {
     if (faqList) setPagionation(faqList.totalRows / faqList.rowsPerPage);
-    else if (error?.status === 401) {
-      localStorage.removeItem('userToken');
-      navigate('/auth/signin');
-    }
-  }, [faqList, error]);
+
+  }, [faqList]);
 
   const handleCheckboxChange = (event: any) => {
     const { value, checked } = event.target;

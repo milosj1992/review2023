@@ -17,7 +17,7 @@ interface TableRCategory {
     language: string;
     id?: string;
   }) => void;
-  data: DataResults;
+  data?: DataResults;
 }
 const TableReusableCategory = ({ onSubmit, data }: TableRCategory) => {
   const { id } = useParams();

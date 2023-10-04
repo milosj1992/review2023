@@ -4,12 +4,12 @@ import { useAppDispatch, useAppSelector } from '../../services/app/store';
 import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-const SignIn = () => {
+interface UserData {
+  username: string;
+  password: string;
+}
 
-  interface UserData {
-    username: string;
-    password: string;
-  }
+const SignIn = () => {
 
   const {
     register,

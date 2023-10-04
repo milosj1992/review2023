@@ -29,7 +29,7 @@ const baseQueryWithReauth = async (
   if ((result?.data as { statusCode?: number })?.statusCode === 401) {
     api.dispatch(logout());
     localStorage.removeItem('userToken');
-    return Promise.reject(result);
+    return { error: { status: 401 } };
   } else {
     return result;
   }

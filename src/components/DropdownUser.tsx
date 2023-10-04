@@ -4,14 +4,9 @@ import { Link } from 'react-router-dom';
 import { useGetUserDetailsQuery } from '../services/api/auth';
 import { logout, setCredentials } from '../services/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../services/app/store';
-// import { useGetFaqListCategoriesQuery } from '../api/faqCategories';
-
-// import UserOne from '../images/user/user-01.png';
 
 const DropdownUser = () => {
   const { userInfo } = useAppSelector((state) => state.auth);
-  // const faq = useAppSelector((state) => state.FaqCategories);
-
   const dispatch = useAppDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -22,11 +17,11 @@ const DropdownUser = () => {
     pollingInterval: 900000, // 15mins
   });
 
-  console.log(data);
+
   useEffect(() => {
 
     if (data) {
-      console.log(userInfo);
+
       dispatch(setCredentials(data));
     }
   }, [data, dispatch]);
