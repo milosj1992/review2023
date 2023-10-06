@@ -2,19 +2,19 @@ import { useSearchParams } from 'react-router-dom';
 
 import {
   useFaqCategoryIdQuery,
-  useFaqUpdateCategoryMutation,
 } from '../services/api/faqCategories';
 import TableReusableCategory from './TableReusableCategory';
+import useCateogory from '../services/hooks/useCateogory';
 
 const TableOne = () => {
   const [serchParams] = useSearchParams();
   const id = serchParams.get('id');
-  const [faqUpdateCategory] = useFaqUpdateCategoryMutation();
+  const { editCategory } = useCateogory();
 
   const { data } = useFaqCategoryIdQuery(id);
 
   const getFields = ({ title }: { title: string }) => {
-    faqUpdateCategory({ id, title });
+    editCategory({ id, title });
   };
 
   return (

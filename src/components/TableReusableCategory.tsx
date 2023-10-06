@@ -7,8 +7,7 @@ interface DataResults {
     ime: string;
     jezik: string;
     listorder: number;
-    // Add other properties as needed
-  } | null; // Make sure to include null in the type if data can be null
+  } | null;
 }
 interface TableRCategory {
   onSubmit: (values: {

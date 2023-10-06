@@ -5,11 +5,9 @@ const Protected = ({ children }: { children: ReactNode }) => {
   const { userToken } = useAppSelector((state) => state.auth);
 
   if (!userToken) {
-    // Redirect to the signin page if userInfo is not defined
     return <Navigate to="/auth/signin" replace />;
   }
 
-  // Render the children if userInfo is defined
   return children;
 };
 

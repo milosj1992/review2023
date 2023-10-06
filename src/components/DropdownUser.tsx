@@ -17,11 +17,8 @@ const DropdownUser = () => {
     pollingInterval: 900000, // 15mins
   });
 
-
   useEffect(() => {
-
     if (data) {
-
       dispatch(setCredentials(data));
     }
   }, [data, dispatch]);
@@ -65,8 +62,8 @@ const DropdownUser = () => {
             {isFetching
               ? null
               : userInfo !== null
-                ? `Logged in as ${userInfo?.email}`
-                : "You're not logged in"}
+              ? `Logged in as ${userInfo?.email}`
+              : "You're not logged in"}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>

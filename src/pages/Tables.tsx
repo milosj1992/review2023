@@ -1,5 +1,5 @@
 import Breadcrumb from '../components/Breadcrumb';
-import TableThree from '../components/TableThree';
+import TableThree from '../components/TableFaqCategory';
 
 const Tables = () => {
   return (
