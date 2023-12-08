@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useParams } from 'react-router-dom';
 interface DataResults {
-  results: {
+  
     id: number;
     ime: string;
     jezik: string;
     listorder: number;
-  } | null;
+   
 }
 interface TableRCategory {
   onSubmit: (values: {
@@ -24,11 +24,12 @@ const TableReusableCategory = ({ onSubmit, data }: TableRCategory) => {
   const fieldForEditCategory = path.pathname === '/faq-id';
 
   useEffect(() => {
+    console.log(data);
     if (data) {
-      setValue('id', data?.results?.id);
-      setValue('title', data?.results?.ime);
-      setValue('language', data?.results?.jezik);
-      setValue('list-order', data?.results?.listorder);
+      setValue('id', data?.id);
+      setValue('title', data?.ime);
+      setValue('language', data?.jezik);
+      setValue('list-order', data?.listorder);
     }
   }, [data]);
 

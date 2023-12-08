@@ -42,12 +42,12 @@ export const faqCategoriesApi = createApi({
   endpoints: (builder) => ({
     faqCategoryId: builder.query({
       query: (id) => ({
-        url: `/faq_category_id?id=${id}`,
+        url: `/faq_category/${id}`,
       }),
     }),
     faqCategoryList: builder.query({
       query: ({ lang, page, rowsPerPage }) => ({
-        url: `/faq_kategorije?lang=${lang}&page=${page}&rowsPerPage=${rowsPerPage}`,
+        url: `/faq_categories?lang=${lang}&page=${page}&rowsPerPage=${rowsPerPage}`,
       }),
       providesTags: [{ type: 'CategoryList' }],
     }),
@@ -56,7 +56,7 @@ export const faqCategoriesApi = createApi({
         // console.log(payload)
         const { id, title } = payload;
         return {
-          url: `/faq_category_id`,
+          url: `/faq_category/${id}`,
           method: 'PATCH',
           body: { id, title },
         };
@@ -67,7 +67,7 @@ export const faqCategoriesApi = createApi({
       query: (payload) => {
         const { title, language, listOrder } = payload;
         return {
-          url: `/faq_category_add`,
+          url: `/faq_category`,
           method: 'POST',
           body: { title, language, listOrder },
         };
@@ -77,7 +77,7 @@ export const faqCategoriesApi = createApi({
     faqDeleteCategory: builder.mutation({
       query: (id) => {
         return {
-          url: `/faq_category_id/${id}`,
+          url: `/faq_category/${id}`,
           method: 'DELETE',
         };
       },
